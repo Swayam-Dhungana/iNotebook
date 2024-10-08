@@ -9,7 +9,7 @@ const JWT_SECRET = `$9G@3d!23f4`;
 
 
 // Route 1
-
+let success=false
 router.post(
   "/createUser",
   body("name").isLength({ min: 3 }),
@@ -29,6 +29,7 @@ router.post(
       }
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
+      success=true
       user = await User.create({
         name: req.body.name,
         email: req.body.email,
@@ -39,6 +40,7 @@ router.post(
           id: user.id,
         },
       }
+      res.status(400).json({success})
     } catch (error) {
       res.status(500).send("Some error occured");
     }
@@ -51,10 +53,11 @@ router.post(
 //Authenticate a user
 //Route 2
 
-router.get('/login',
+router.post('/login',
   body("email").isEmail(),
   body("password").exists(),
 async(req,res)=>{
+  let success=false;
   let errors=validationResult(req);
   if(!errors.isEmpty()){
     return res.status(400).send('Enter correct creds!')
@@ -63,11 +66,13 @@ async(req,res)=>{
   try{
     let user=await User.findOne({email});
     if(!user){
+      success=false
       return res.status(400).json({errors:"Email or password is incorrect"})
     }
     const passwordCompare=await bcrypt.compare(password,user.password);
     if(!passwordCompare){
-      return res.status(ison({errors:"Email or password is incorrect"}))
+      success=false
+      return res.status(ison({success,errors:"Email or password is incorrect"}))
     }
     const data = {
       user: {
@@ -75,7 +80,8 @@ async(req,res)=>{
       },
     };
     const authToken = jwt.sign(data, JWT_SECRET);
-    res.json({authToken})
+    success=true;
+    res.json({success,authToken})
   }catch (error) {
     res.status(500).send("Internal Server Error:Some error occured");
   }

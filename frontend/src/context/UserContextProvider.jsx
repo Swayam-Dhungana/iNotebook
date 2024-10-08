@@ -10,7 +10,7 @@ const UserContextProvider=({children})=>{
         const response=await fetch(`${host}/notes/fetchallnotes`,{
           method: 'GET',
           headers:{
-            "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmZDRmYjIwNDc0N2VjNzRhMTU5ZDAxIn0sImlhdCI6MTcyNzg3NzA1OX0.eR1SuGJ9GqYOC8oyMUMkYjDmqHIN9um8JbEZ6QdEygQ"
+            "auth-token": localStorage.getItem('token')
           }
         }
         )
@@ -31,7 +31,7 @@ const UserContextProvider=({children})=>{
           headers:{
             'Content-Type': 'application/json',
             'Accept':'application/json',
-            "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmZDRmYjIwNDc0N2VjNzRhMTU5ZDAxIn0sImlhdCI6MTcyNzg3NzA1OX0.eR1SuGJ9GqYOC8oyMUMkYjDmqHIN9um8JbEZ6QdEygQ"
+            "auth-token": localStorage.getItem('token')
           },
           body: JSON.stringify({title, description, tag})
         }
@@ -48,10 +48,10 @@ const UserContextProvider=({children})=>{
 
       const deleteNote=async(id)=>{
         const response=await fetch(`${host}/notes/deletenote/${id}`,{
-          
+
           method: 'DELETE',
           headers:{
-            "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmZDRmYjIwNDc0N2VjNzRhMTU5ZDAxIn0sImlhdCI6MTcyNzg3NzA1OX0.eR1SuGJ9GqYOC8oyMUMkYjDmqHIN9um8JbEZ6QdEygQ"
+            "auth-token": localStorage.getItem('token')
           }
 }
         )
@@ -74,7 +74,7 @@ const UserContextProvider=({children})=>{
           method: 'PUT',
           headers:{
             "Content-type":"application/json",
-            "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZmZDRmYjIwNDc0N2VjNzRhMTU5ZDAxIn0sImlhdCI6MTcyNzg3NzA1OX0.eR1SuGJ9GqYOC8oyMUMkYjDmqHIN9um8JbEZ6QdEygQ"
+            "auth-token": localStorage.getItem('token')
           },
           body: JSON.stringify({title, description, tag})
         }
