@@ -40,7 +40,8 @@ router.post(
           id: user.id,
         },
       }
-      res.status(400).json({success})
+      const authToken = jwt.sign(data, JWT_SECRET);
+      res.status(400).json({success,authToken})
     } catch (error) {
       res.status(500).send("Some error occured");
     }
